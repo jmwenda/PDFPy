@@ -5,6 +5,11 @@ parser = argparse.ArgumentParser(description='Tool for consuming xml"s produced 
 parser.add_argument("-f","--file",dest="xmlfile", type=file,help="Consume the xml file",metavar="PATH")
 
 args = parser.parse_args()
+
+def process_page(page):
+    #script that gets a page element and creates the csv
+    page_bounds = page.attrib['bbox'] 
+    textboxes = page.getchildren()
 def process_file():
     if args.xmlfile:
         #we now consume the xml file,first open then read
@@ -12,6 +17,10 @@ def process_file():
         data = file.read()
         root = etree.fromstring(data)
         #we now cosume the formatted xml with lxml 
+        #we get the page with the bbox items
+        pages = root.getchildren()
+        for page in pages:
+            process_page(page);
     return root
 print process_file()
 
